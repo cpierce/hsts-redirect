@@ -6,3 +6,6 @@ measure.  You can check at [https://hstspreload.org](https://hstspreload.org).
 This means that setting a custom domain like mail.example.comm won't work for
 you. This solution fixes the limitation by checking the hostname of the
 request and the redirecting to the correct gmail location for that hostname.
+
+We will use letsencrypt for our encryption so the HSTS security technique does
+not break our redirects for Google Workspace.
