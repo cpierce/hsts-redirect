@@ -32,12 +32,13 @@ This PHP script provides a simple yet effective way to manage subdomain redirect
 
 ## Customization
 
-- You can modify the `switch` statement in the script to add or change redirection rules.
+- You can modify the `array` in the top of the script to add or change redirection rules.
 - Ensure the domain names in the redirect URLs match your Google Workspace setup.
 
 ## Requirements
 
 - A web server with PHP support.
+- A certbot installation on the server. Since we are stapling we assume that we want this for the subdomains we are creating. #TODO - Add Example of my nginx conf.
 - A Google Workspace account with a custom domain.
 
 ## Security Notes
