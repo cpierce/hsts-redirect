@@ -33,8 +33,5 @@ jobs:
       - name: Deploy application
         run: |
           rsync -avz --delete --exclude='.env' . runner@${{ secrets.DEPLOY_HOST }}:~/${{ secrets.DEPLOY_DIR }}_stage
-          ssh runner@${{ secrets.DEPLOY_HOST }} 'cd ~/${{ secrets.DEPLOY_DIR }}_stage && composer install --no-dev'
           ssh runner@${{ secrets.DEPLOY_HOST }} 'sudo rsync -avz --chown=www-data:www-data --delete --exclude=".git" --exclude="logs/" --exclude="tmp/" ~/${{ secrets.DEPLOY_DIR }}_stage/ /var/www/${{ secrets.DEPLOY_DIR }}'
           ssh runner@${{ secrets.DEPLOY_HOST }} 'rm -rf ~/${{ secrets.DEPLOY_DIR }}_stage'
-          ssh runner@${{ secrets.DEPLOY_HOST }} 'sudo /var/www/${{ secrets.DEPLOY_DIR }}/bin/cake cache clear_all'
-
