@@ -1,0 +1,40 @@
+name: Deploy to Production Server
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://github.com
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: CakePHP Deploy
+        uses: shivammathur/setup-php@v2
+        with:
+            php-version: '8.1'
+            extensions: intl, mbstring, simplexml, igbinary
+
+      - name: Setup SSH Keys
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openssh-client rsync
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_ed25519
+          chmod 700 ~/.ssh/id_ed25519
+
+      - name: Deploy application
+        run: |
+          rsync -avz --delete --exclude='.env' . runner@${{ secrets.DEPLOY_HOST }}:~/${{ secrets.DEPLOY_DIR }}_stage
+          ssh runner@${{ secrets.DEPLOY_HOST }} 'cd ~/${{ secrets.DEPLOY_DIR }}_stage && composer install --no-dev'
+          ssh runner@${{ secrets.DEPLOY_HOST }} 'sudo rsync -avz --chown=www-data:www-data --delete --exclude=".git" --exclude="logs/" --exclude="tmp/" ~/${{ secrets.DEPLOY_DIR }}_stage/ /var/www/${{ secrets.DEPLOY_DIR }}'
+          ssh runner@${{ secrets.DEPLOY_HOST }} 'rm -rf ~/${{ secrets.DEPLOY_DIR }}_stage'
+          ssh runner@${{ secrets.DEPLOY_HOST }} 'sudo /var/www/${{ secrets.DEPLOY_DIR }}/bin/cake cache clear_all'
+
