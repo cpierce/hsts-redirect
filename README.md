@@ -33,7 +33,7 @@ This PHP script provides a simple yet effective way to manage subdomain redirect
 ## Customization
 
 - You can modify the `array` in the top of the script to add or change redirection rules.
-- Ensure the domain names in the redirect URLs match your Google Workspace setup.
+- Ensure the domain names in the redirect URLs match your Google Workspace Setup.
 
 ## Requirements
 
