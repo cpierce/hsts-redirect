@@ -18,7 +18,7 @@ jobs:
       - name: CakePHP Deploy
         uses: shivammathur/setup-php@v2
         with:
-            php-version: '8.1'
+            php-version: '8.3'
             extensions: intl, mbstring, simplexml, igbinary
 
       - name: Setup SSH Keys
