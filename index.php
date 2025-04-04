@@ -1,4 +1,5 @@
 <?php
+
 // Define redirection rules
 $redirections = [
     'docs' => 'https://drive.google.com/a/',
@@ -26,3 +27,4 @@ $googleWorkspaceDomain = ltrim($googleWorkspaceDomain, '.');
 // Redirect based on the subdomain
 $redirectURL = $redirections[$subdomain] ?? $redirections['default'];
 header('Location: ' . $redirectURL . $googleWorkspaceDomain, true, 301);
+
